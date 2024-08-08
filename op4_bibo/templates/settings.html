@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Settings
+{% endblock %}
+
+{% block main %}
+<form action="/settings" method="post">
+    <h2>Access Settings</h2><br>
+    <h5>[Not for Troopers]</h5><br><br>
+    <label for="key">Enter Key:</label>
+    <input type="text" id="key" name="key" autocomplete="off"><br><br>
+    <button type="submit">Enter</button>
+</form>
+
+
+{% endblock %}

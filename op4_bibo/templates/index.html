@@ -1,0 +1,272 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+<!--<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript to Python Example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <input type="text" placeholder="Name" id="name" name="name">
+    <button onclick="sendData()">Book In</button>
+    <div id="output"></div>
+    <div id="ip"></div>
+    <script>
+
+        function sendData() {
+            navigator.geolocation.getCurrentPosition(showPosition);
+            function showPosition(position) {
+
+            var lat = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            var trp = document.getElementById("name").value;
+            console.log(trp);
+
+            $.ajax({
+                url: '/process',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ 'lat': lat, 'long': longitude, 'trp': trp }),
+                success: function(response) {
+                    document.getElementById('output').innerHTML = response.result;
+                    document.getElementById('ip').innerHTML = response.ip;
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+        }
+    </script>
+</body>
+</html>-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OPFOR BOOK IN</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1 style="text-align:center">OPFOR BOOK IN</h1><br>
+    <div class="row" style="text-align: center; padding-left:46%">
+        <div class="col-md-2">
+            <label for="name">Select Name:</label>
+            <select name="name" id="name" placeholder="Trooper Name">
+                <option value=""></option>
+                {% for name in trp %}
+                <option value="{{ name[0] }}">{{ name[0] }}</option>
+                {% endfor %}
+            </select><br><br>
+            <label for="type">Book Type:</label>
+            <select name="type" id="type">
+                <option value=""></option>
+                <option value="IN">Book In</option>
+                <option value="OUT">Book Out</option>
+            </select>
+            <br><br><br><br>
+            <button onclick="sendData()" style="height:40px; width:90px">Submit</button>
+        </div>
+    </div><br><br><br>
+    <div id="output" style="text-align:center; font-size:20px"></div>
+    <div id="ip"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script>
+
+        function sendData() {
+            navigator.geolocation.getCurrentPosition(showPosition);
+            function showPosition(position) {
+            var key ='AAAAAAAAAAAAAAAA'//key used in Python
+            key = CryptoJS.enc.Utf8.parse(key);
+            var iv = CryptoJS.enc.Utf8.parse('BBBBBBBBBBBBBBBB')
+
+
+            var charset_1= CryptoJS.AES.encrypt(String(position.coords.latitude), key, { iv: iv, mode: CryptoJS.mode.CBC}).toString();
+            var charset_22 = CryptoJS.AES.encrypt(String(position.coords.longitude), key, { iv: iv, mode: CryptoJS.mode.CBC}).toString();
+            var trp = document.getElementById("name").value;
+            var type = document.getElementById("type").value;
+
+            $.getJSON("https://ipinfo.io/", function(data) {
+                var ip = data.ip;
+
+
+            $.ajax({
+                url: '/process',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ 'lat1': charset_1, 'long1': charset_22, 'trp': trp, 'ip': ip, 'type': type }),
+                success: function(response) {
+                    document.getElementById('output').innerHTML = response.result;
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+            })
+        }
+        }
+    </script>
+<br><br><br><br><br>
+<h3 style="text-align:center">Book in History for {{ today }}</h3><br>
+<div class="container">
+<label for="demo1" style="font-weight:bold">Platoon 1</label><br><br>
+<table class="table" id="demo1" style="width:40%; margin-left: 30%; text-align:center">
+    <thead style="padding-right:10px;">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Book in Time</th>
+        <th scope="col">Book out Time</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for x in table_data_1 %}
+        <tr>
+            <td scope="row">{{ x[0] }}</td>
+            <td>{{ x[1]}}</td>
+            <td>{{ x[2]}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div><br><br><br><br>
+<div class="container">
+    <label for="demo2" style="font-weight:bold">Platoon 2</label><br><br>
+    <table class="table" id="demo2" style="width:40%; margin-left: 30%; text-align:center">
+        <thead style="padding-right:10px;">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Book in Time</th>
+            <th scope="col">Book out Time</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for x in table_data_2 %}
+            <tr>
+                <td scope="row">{{ x[0] }}</td>
+                <td>{{ x[1] }}</td>
+                <td>{{ x[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</div><br><br><br><br>
+<div class="container">
+    <label for="demo3" style="font-weight:bold">Platoon 3</label><br><br>
+    <table class="table" id="demo3" style="width:40%; margin-left: 30%; text-align:center">
+        <thead style="padding-right:10px;">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Book in Time</th>
+            <th scope="col">Book out Time</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for x in table_data_3 %}
+            <tr>
+                <td scope="row">{{ x[0] }}</td>
+                <td>{{ x[1] }}</td>
+                <td>{{ x[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</div><br><br><br><br>
+<div class="container">
+    <label for="demo4" style="font-weight:bold">Weapons</label><br><br>
+    <table class="table" id="demo4" style="width:40%; margin-left: 30%; text-align:center">
+        <thead style="padding-right:10px;">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Book in Time</th>
+            <th scope="col">Book out Time</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for x in table_data_4 %}
+            <tr>
+                <td scope="row">{{ x[0] }}</td>
+                <td>{{ x[1] }}</td>
+                <td>{{ x[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</div><br><br><br><br>
+<div class="container">
+    <label for="demo5" style="font-weight:bold">HQ</label><br><br>
+    <table class="table" id="demo5" style="width:40%; margin-left: 30%; text-align:center">
+        <thead style="padding-right:10px;">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Book in Time</th>
+            <th scope="col">Book out Time</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for x in table_data_5 %}
+            <tr>
+                <td scope="row">{{ x[0] }}</td>
+                <td>{{ x[1] }}</td>
+                <td>{{ x[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</div><br><br><br><br>
+<div class="container">
+    <label for="demo5" style="font-weight:bold">Shark Platoon 1</label><br><br>
+    <table class="table" id="demo5" style="width:40%; margin-left: 30%; text-align:center">
+        <thead style="padding-right:10px;">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Book in Time</th>
+            <th scope="col">Book out Time</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for x in table_data_6 %}
+            <tr>
+                <td scope="row">{{ x[0] }}</td>
+                <td>{{ x[1] }}</td>
+                <td>{{ x[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</div><br><br><br><br>
+<div class="container">
+    <label for="demo5" style="font-weight:bold">Shark Platoon 2</label><br><br>
+    <table class="table" id="demo5" style="width:40%; margin-left: 30%; text-align:center">
+        <thead style="padding-right:10px;">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Book in Time</th>
+            <th scope="col">Book out Time</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for x in table_data_7 %}
+            <tr>
+                <td scope="row">{{ x[0] }}</td>
+                <td>{{ x[1] }}</td>
+                <td>{{ x[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</div><br><br><br><br>
+
+
+
+
+
+
+</body>
+</html>
+
+{% endblock %}

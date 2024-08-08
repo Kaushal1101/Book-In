@@ -1,0 +1,54 @@
+
+
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+
+{% block main %}
+<form action="/history" method="post">
+    <h2>View History</h2><br>
+    <div class="row" style="padding-left: 25%">
+        <div class="col-md-2">
+            <label for="date">Date</label>
+            <input type="text" id="date" name="date" autocomplete="off" class="form-control" placeholder="DDMMYYYY">
+        </div>
+        <div class="col-md-2">
+            <label for="plt">Platoon</label>
+            <select id="plt" name="plt" class="form-control">
+                <option value=""></option>
+                <option value="1">Platoon 1</option>
+                <option value="2">Platoon 2</option>
+                <option value="3">Platoon 3</option>
+                <option value="4">Weapons</option>
+                <option value="5">HQ</option>
+                <option value="6">Shark First</option>
+                <option value="7">Shark Second</option>
+        </select><br>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="name">Name</label>
+            <select id="name" name="name" class="form-control">
+                <option value=""></option>
+                {% for name in names %}
+                <option value="{{ name[0] }}">{{ name[0] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="key">Key</label>
+            <input type="text" id="key" name="key" autocomplete="off" class="form-control">
+        </div>
+    </div><br><br>
+    <div class="row" style="padding-left:45.5%">
+        <div class="col-md-2">
+            <button type="submit" class="form-control">Search</button>
+        </div>
+    </div>
+    </form>
+
+{% endblock %}
+

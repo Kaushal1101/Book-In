@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+
+{% block main %}
+<h4>Input / ORD / Convert Platoon</h4><br>
+<h5>Input a platoon in table below</h5><br>
+
+<form action="/restricted" method="post">
+
+<div class="row" style="float:center; margin-left:40%; color:purple">
+    <div class="col-md-2">
+        <label for="plt">Platoon</label>
+        <select name="plt" id="plt" class="form-control">
+            <option value=""></option>
+            <option value="1">Platoon 1</option>
+            <option value="2">Platoon 2</option>
+            <option value="3">Platoon 3</option>
+            <option value="4">Weapons</option>
+            <option value="5">HQ</option>
+            <option value="6">Shark 1</option>
+            <option value="7">Shark 2</option>
+        </select><br>
+    </div>
+    <div class="col-md-2">
+        <label for="key_add">Enter Key</label>
+        <input type="text" id="key_add" name="key_add" autocomplete="off" class="form-control">
+    </div>
+</div><br>
+<div class="table-responsive fixed-table-body table-bordered">
+<div class="row">
+    <div class="container">
+        <table>
+            <thead>
+            <tr style="text-align:center">
+                <th>#</th>
+                <th>Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for var in loops %}
+            <tr>
+                <td>
+                    {{ var['number'] }}
+                </td>
+                <td>
+                    <input type="text" id="{{ var['name'] }}" name="{{ var['name'] }}">
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</div><br><br><br>
+
+
+<h4>Remove Troopers</h4><br>
+<div class="row" style="padding-left:37%; color:red">
+    <div class="col-md-3">
+        <label for="ord_conf">Remove these Troopers?</label>
+        <select id="ord_conf" name="ord_conf" class="form-control">
+        <option value="no">No</option>
+        <option value="yes">Yes</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <label for="key_ord">Enter Key</label>
+        <input type="text" id="key_ord" name="key_ord" class="form-control">
+    </div>
+</div><br><br>
+
+<h4>Platoon/Trooper(s) Conversion</h4><br>
+<div class="row" style="padding-left:33%; color:blue">
+    <div class="col-md-2">
+        <label for="new">New Platoon</label>
+        <select id="new" name="new" class="form-control">
+            <option value=""></option>
+            <option value="1">Platoon 1</option>
+            <option value="2">Platoon 2</option>
+            <option value="3">Platoon 3</option>
+            <option value="4">Weapons</option>
+            <option value="5">Shark</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <label for="conv_conf">Confirm</label>
+        <select id="conv_conf" name="conv_conf" class="form-control">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <label for="key_conv">Enter Key</label>
+        <input type="text" id="key_conv" name="key_conv" class="form-control">
+    </div>
+</div><br><br>
+
+<button type="submit">Submit Changes</button>
+</form>
+
+{% endblock %}
